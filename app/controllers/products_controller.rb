@@ -22,4 +22,11 @@ class ProductsController < ApplicationController
   def edit
     @product = Product.find(params[:id])
   end
+  
+  def member_products
+    @member = Member.find(params[:member_id])
+    @products = @member.products
+    render :index # または、メンバー専用のビューを用意する
+  end
+  
 end

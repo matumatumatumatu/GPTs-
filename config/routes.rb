@@ -5,7 +5,11 @@ Rails.application.routes.draw do
   root "home#top"
 
   resources :members, only: [:show, :edit, :update] do
-    get 'favorites', on: :member # この行をresources :membersブロック内に移動
+    get 'favorites', on: :member
+    get 'products', on: :member, to: 'products#member_products', as: 'member_products'
+    get 'posts', on: :member, to: 'posts#member_posts', as: 'member_posts'
+    get 'reviews', on: :member, to: 'reviews#member_reviews', as: 'member_reviews'
+    get 'comments', on: :member, to: 'comments#member_comments', as: 'member_comments'
   end
 
   namespace :admin do

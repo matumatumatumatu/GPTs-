@@ -57,5 +57,10 @@ end
     params.require(:post).permit(:title, :body, :status, tag_ids: [])
   end
   
-  # test
+  def member_posts
+    @member = Member.find(params[:member_id])
+    @posts = @member.posts
+    render :index # または、メンバー専用のビューを用意する
+  end
+  
 end

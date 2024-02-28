@@ -8,5 +8,11 @@
 
   <%= link_to '編集', edit_member_path(@member), class: 'btn btn-primary' %>
   <%= link_to 'お気に入り一覧', favorites_member_path(@member), class: 'btn btn-info' %>
-  <%= link_to '新しい投稿を作成', new_post_path, class: 'btn btn-success' %>
+  <%= link_to '新しい投稿を作成', new_product_path, class: 'btn btn-success' %>
+
+  <!-- 新しく追加するリンク -->
+  <%= link_to '投稿一覧', posts_path, class: 'btn btn-secondary' %>
+  <%= link_to '自分の投稿一覧', member_products_member_path(@member), class: 'btn btn-secondary' %>
+  <%= link_to '自分の投稿したレビュー一覧', member_reviews_member_path(@member), class: 'btn btn-secondary' %>
+  <%= link_to '自分のコメント一覧', member_comments_member_path(@member), class: 'btn btn-secondary' %>
 </div>
