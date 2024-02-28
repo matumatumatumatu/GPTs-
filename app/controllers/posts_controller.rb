@@ -56,4 +56,6 @@ end
   def post_params
     params.require(:post).permit(:title, :body, :status, tag_ids: [])
   end
+  
+  # test
 end
