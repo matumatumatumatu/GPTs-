@@ -1,0 +1,21 @@
+<!-- app/views/members/edit.html.erb -->
+<div class="container mt-5">
+  <h2>メンバー情報の編集</h2>
+  <%= form_for(@member) do |f| %>
+    <div class="form-group">
+      <%= f.label :email, "メールアドレス" %>
+      <%= f.email_field :email, class: 'form-control' %>
+    </div>
+
+    <div class="form-group">
+      <%= f.label :name, "名前" %>
+      <%= f.text_field :name, class: 'form-control' %>
+    </div>
+
+    <!-- 他の必要なフィールドをここに追加 -->
+
+    <%= f.submit "更新", class: 'btn btn-primary' %>
+  <% end %>
+
+  <%= link_to '戻る', member_path(@member), class: 'btn btn-secondary' %>
+</div>

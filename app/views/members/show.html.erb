@@ -1,0 +1,12 @@
+<!-- app/views/members/show.html.erb -->
+<div class="container mt-5">
+  <h2>メンバー情報</h2>
+  <p><strong>メールアドレス:</strong> <%= @member.email %></p>
+  <p><strong>名前:</strong> <%= @member.name %></p>
+
+  <!-- 他の表示したい情報をここに追加 -->
+
+  <%= link_to '編集', edit_member_path(@member), class: 'btn btn-primary' %>
+  <%= link_to 'お気に入り一覧', favorites_member_path(@member), class: 'btn btn-info' %>
+  <%= link_to '新しい投稿を作成', new_post_path, class: 'btn btn-success' %>
+</div>

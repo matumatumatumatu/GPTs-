@@ -1,0 +1,13 @@
+<!-- app/views/reviews/index.html.erb -->
+<div class="container mt-5">
+  <h2>レビュー一覧</h2>
+  <% @reviews.each do |review| %>
+    <div class="mb-3">
+      <h3><%= link_to review.title, review %></h3>
+      <p><%= truncate(review.content, length: 100) %></p>
+      <%= link_to '削除', review, method: :delete, data: { confirm: 'このレビューを削除してよろしいですか？' }, class: 'btn btn-danger' %>
+    </div>
+  <% end %>
+
+  <%= link_to '新しいレビューを投稿', new_review_path, class: 'btn btn-primary' %>
+</div>

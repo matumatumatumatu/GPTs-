@@ -1,0 +1,8 @@
+<!-- app/views/products/show.html.erb -->
+<div class="container mt-5">
+  <h2><%= @product.name %></h2>
+  <p><%= @product.description %></p>
+
+  <%= link_to '編集', edit_product_path(@product), class: 'btn btn-primary' %>
+  <%= link_to '一覧に戻る', products_path, class: 'btn btn-secondary' %>
+</div>

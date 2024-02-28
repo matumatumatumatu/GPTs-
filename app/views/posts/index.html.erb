@@ -1,0 +1,16 @@
+<!-- app/views/posts/index.html.erb -->
+<div class="container mt-5">
+  <h2>投稿一覧</h2>
+  <% if @posts.present? %>
+    <% @posts.each do |post| %>
+      <div class="mb-3">
+        <h3><%= link_to post.title, post %></h3>
+        <p><%= truncate(post.body, length: 100) %></p>
+      </div>
+    <% end %>
+  <% else %>
+    <p>投稿がありません。</p>
+  <% end %>
+
+  <%= link_to '新しい投稿を作成', new_post_path, class: 'btn btn-primary' %>
+</div>

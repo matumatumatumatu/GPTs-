@@ -1,0 +1,16 @@
+<!-- app/views/home/top.html.erb -->
+<div class="container">
+  <div class="jumbotron mt-5">
+    <h1 class="display-4">Welcome to Our Application!</h1>
+    <p class="lead">This is a simple hero unit, a simple jumbotron-style component for calling extra attention to featured content or information.</p>
+    <hr class="my-4">
+    <p>Use this document as a way to quickly start any new project.</p>
+    <% if member_signed_in? %>
+      <p>Hello, <%= current_member.email %></p>
+      <%= link_to 'Logout', destroy_member_session_path, data: { turbo_method: :delete } ,class: 'btn btn-primary'%>
+    <% else %>
+      <%= link_to 'Login', new_member_session_path, class: 'btn btn-primary' %>
+      <%= link_to 'Sign up', new_member_registration_path, class: 'btn btn-secondary' %>
+    <% end %>
+  </div>
+</div>

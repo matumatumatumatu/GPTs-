@@ -1,0 +1,12 @@
+<!-- app/views/posts/show.html.erb -->
+<div class="container mt-5">
+  <div class="row justify-content-center">
+    <div class="col-md-8">
+      <h2 class="text-center"><%= @post.title %></h2>
+      <p><%= @post.body %></p>
+
+      <%= link_to '編集', edit_post_path(@post), class: 'btn btn-primary' %>
+      <%= link_to '一覧に戻る', posts_path, class: 'btn btn-secondary' %>
+    </div>
+  </div>
+</div>
