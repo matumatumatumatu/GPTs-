@@ -1,8 +1,23 @@
-<!-- app/views/products/show.html.erb -->
+<!-- app/views/products/show.html.erb 生成AIそのものの名前と概要 -->
 <div class="container mt-5">
   <h2><%= @product.name %></h2>
   <p><%= @product.description %></p>
 
   <%= link_to '編集', edit_product_path(@product), class: 'btn btn-primary' %>
   <%= link_to '一覧に戻る', products_path, class: 'btn btn-secondary' %>
+  
+<div class="comments">
+  <h3>Comments</h3>
+  <% @comments.each do |comment| %>
+    <div class="comment">
+      <p><%= comment.content %></p>
+      <p>Posted at: <%= comment.created_at.strftime("%Y-%m-%d %H:%M") %></p>
+      <% if comment_belongs_to_current_member?(comment) %>
+        <%= link_to 'Delete', comment_path(comment), method: :delete, data: { confirm: 'Are you sure?' } %>
+      <% end %>
+    </div>
+  <% end %>
 </div>
+
+<h3>Add a comment:</h3>
+<%= render 'comments/form' %>

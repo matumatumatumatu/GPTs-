@@ -29,8 +29,10 @@ Rails.application.routes.draw do
     delete :destroy, on: :member
   end
   
-  resources :products, only: [:index, :show, :new, :edit] do
-    resources :comments, only: [:create]
+  resources :comments, only: [:index, :destroy]
+  
+  resources :products, only: [:index, :show, :new, :edit, :create] do
+    resources :comments, only: [:create, :destroy]
     resource :favorites, only: [:create, :destroy] # 単数形に変更しておくと、idがルーティングに含まれなくなります。
   end
 
