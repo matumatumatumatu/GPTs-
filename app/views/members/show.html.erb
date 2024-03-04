@@ -1,4 +1,5 @@
 <!-- app/views/members/show.html.erb -->
+<%= render 'layouts/member_header' %>
 <div class="container mt-5">
   <h2>メンバー情報</h2>
   <p><strong>メールアドレス:</strong> <%= @member.email %></p>
@@ -14,5 +15,5 @@
   <%= link_to '投稿一覧', posts_path, class: 'btn btn-secondary' %>
   <%= link_to '自分の投稿一覧', member_products_member_path(@member), class: 'btn btn-secondary' %>
   <%= link_to '自分の投稿したレビュー一覧', member_reviews_member_path(@member), class: 'btn btn-secondary' %>
-  <%= link_to '自分のコメント一覧', member_comments_member_path(@member), class: 'btn btn-secondary' %>
+<%= link_to '自分のコメント一覧', comments_path(member_id: @member.id), class: 'btn btn-secondary' %>
 </div>

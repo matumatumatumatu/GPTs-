@@ -1,31 +1,37 @@
 # postはレビュー対象と概要
 class PostsController < ApplicationController
   before_action :authenticate_member!, only: [:new, :create, :edit, :update]
-  before_action :set_post, only: [:show, :edit, :update, :destroy]
   before_action :check_ownership, only: [:edit, :update]
+  before_action :set_post, only: [:show, :edit, :update, :destroy]
+  before_action :set_product, only: [:new, :create]
 
   def index
-    @posts = Post.all
+    if params[:product_id]
+      @product = Product.find(params[:product_id])
+      @posts = @product.posts
+    else
+      @posts = Post.all
+    end
   end
-
+  
 def destroy
   @post.destroy
   redirect_to posts_path, notice: '投稿が削除されました。'
 end
 
   def new
-    @post = Post.new
+    @post = @product.posts.build # 製品に紐づいた新しい投稿を作成
   end
 
-def create
-  @post = current_member.posts.new(post_params)
-  if @post.save
-    redirect_to @post, notice: '投稿が保存されました。'
-  else
-    render :new
+  def create
+    @post = @product.posts.build(post_params.merge(member: current_member)) # 製品とメンバーに紐づいた投稿を作成
+    if @post.save
+      redirect_to @product, notice: '投稿が作成されました。' # 製品の詳細ページにリダイレクト
+    else
+      render :new
+    end
   end
-end
-
+  
   def edit
   end
 
@@ -52,11 +58,15 @@ end
   def set_post
     @post = Post.find(params[:id])
   end
-  
-  def post_params
-    params.require(:post).permit(:title, :body, :status, tag_ids: [])
+
+  def set_product
+    @product = Product.find(params[:product_id]) # 製品IDから製品を取得
   end
   
+  def post_params
+    params.require(:post).permit(:title, :body, :status) # statusの扱いについては、アプリケーションの要件に応じて調整してください
+  end
+
   def member_posts
     @member = Member.find(params[:member_id])
     @posts = @member.posts

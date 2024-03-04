@@ -1,5 +1,5 @@
 Rails.application.routes.draw do
-  # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
+  # For details on the DSL available within this file, see https://guides.rub yonrails.org/routing.html
   devise_for :members
   
   root "home#top"
@@ -9,8 +9,10 @@ Rails.application.routes.draw do
     get 'products', on: :member, to: 'products#member_products', as: 'member_products'
     get 'posts', on: :member, to: 'posts#member_posts', as: 'member_posts'
     get 'reviews', on: :member, to: 'reviews#member_reviews', as: 'member_reviews'
-    get 'comments', on: :member, to: 'comments#member_comments', as: 'member_comments'
+    member do
+    get 'comments', to: 'comments#member_comments'
   end
+end
 
   namespace :admin do
     resources :members, only: [:index, :show, :edit, :update, :destroy]
@@ -34,6 +36,7 @@ Rails.application.routes.draw do
   resources :products, only: [:index, :show, :new, :edit, :create] do
     resources :comments, only: [:create, :destroy]
     resource :favorites, only: [:create, :destroy] # 単数形に変更しておくと、idがルーティングに含まれなくなります。
+    resources :posts, only: [:new, :create, :show, :index]
   end
 
   # TagsControllerに対するルーティング
@@ -45,7 +48,7 @@ Rails.application.routes.draw do
       get :drafts # 下書きの投稿一覧を表示するためのアクションが正しくスコープ内に配置される
     end
   end
-
+  
   get "up" => "rails/health#show", as: :rails_health_check
 
   post 'guest_sign_in', to: 'members#guest_sign_in'

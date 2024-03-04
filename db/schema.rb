@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2024_03_03_145428) do
+ActiveRecord::Schema.define(version: 2024_03_04_120858) do
 
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
@@ -82,7 +82,9 @@ ActiveRecord::Schema.define(version: 2024_03_03_145428) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.integer "member_id"
+    t.integer "product_id", null: false
     t.index ["member_id"], name: "index_posts_on_member_id"
+    t.index ["product_id"], name: "index_posts_on_product_id"
   end
 
   create_table "products", force: :cascade do |t|
@@ -91,6 +93,7 @@ ActiveRecord::Schema.define(version: 2024_03_03_145428) do
     t.decimal "price"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.integer "member_id"
   end
 
   create_table "reviews", force: :cascade do |t|
@@ -117,6 +120,7 @@ ActiveRecord::Schema.define(version: 2024_03_03_145428) do
   add_foreign_key "comments", "products"
   add_foreign_key "favorites", "members"
   add_foreign_key "favorites", "products"
+  add_foreign_key "posts", "products"
   add_foreign_key "reviews", "members"
   add_foreign_key "reviews", "products"
 end

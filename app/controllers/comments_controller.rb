@@ -1,9 +1,14 @@
 class CommentsController < ApplicationController
   before_action :restrict_guest_user_access, only: [:create]
   
-  def index
-    @comments = current_member.comments.order(created_at: :desc)
+def index
+  if params[:member_id].present?
+    @member = Member.find(params[:member_id])
+    @comments = @member.comments.order(created_at: :desc)
+  else
+    @comments = Comment.order(created_at: :desc)
   end
+end
 
 def create
   @product = Product.find(params[:product_id])
@@ -23,6 +28,13 @@ end
   else
     redirect_to product_path(@product), alert: 'コメントの削除に失敗しました。'
   end
+end
+
+def member_comments 
+  @member = Member.find(params[:id]) # メンバーを取得
+  @comments = @member.comments.order(created_at: :desc) # そのメンバーのコメントを新しい順に取得
+
+  render :index # indexビューを表示（または、メンバー専用のコメント一覧ビューを作成しても良い）
 end
 
   private

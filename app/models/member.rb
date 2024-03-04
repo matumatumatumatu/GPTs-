@@ -5,6 +5,8 @@ class Member < ApplicationRecord
          :recoverable, :rememberable, :validatable
          
   has_many :favorites
-  has_many :products, through: :favorites
+  has_many :favorite_products, through: :favorites, source: :product
   has_many :posts
+  has_many :comments, dependent: :destroy
+    has_many :products
 end

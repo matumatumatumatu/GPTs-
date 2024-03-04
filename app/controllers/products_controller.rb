@@ -25,20 +25,27 @@ class ProductsController < ApplicationController
     @product = Product.find(params[:id])
   end
   
-  def member_products
-    @member = Member.find(params[:member_id])
-    @products = @member.products
-    render :index # または、メンバー専用のビューを用意する
-  end
+def member_products
+  @member = Member.find(params[:id]) # 正しいパラメータ名に修正
+  logger.debug "Member: #{@member.inspect}" # メンバーのデバッグ出力
   
-  def create
-    @product = Product.new(product_params)
-    if @product.save
-      redirect_to @product, notice: '製品が正常に作成されました。'
-    else
-      render :new
-    end
+  @products = @member.products
+  logger.debug "Products: #{@products.inspect}" # 製品のデバッグ出力
+  
+  render :index # または、メンバー専用のビューを用意する
+end
+  
+def create
+  @product = Product.new(product_params)
+  @product.member = current_member
+  if @product.save
+    # 製品の保存に成功したら、関連する投稿を作成する
+    post = @product.posts.create(title: @product.name, body: @product.description, member: current_member)
+    redirect_to @product, notice: '製品が正常に作成されました。'
+  else
+    render :new
   end
+end
 
 private
   def product_params

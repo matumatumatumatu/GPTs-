@@ -1,24 +1,10 @@
 <!--app/views/comment/index.html.erb 自分のコメント一覧-->
 <h2>My Comments</h2>
 
-<table>
-  <thead>
-    <tr>
-      <th>Comment</th>
-      <th>Posted on</th>
-      <th>Actions</th>
-    </tr>
-  </thead>
-  <tbody>
-    <% @comments.each do |comment| %>
-      <tr>
-        <td><%= comment.body %></td>
-        <td><%= comment.created_at.strftime("%Y-%m-%d %H:%M:%S") %></td>
-        <td>
-          <%= link_to 'View Product', product_path(comment.product) %>
-          <%= link_to 'Delete', comment, method: :delete, data: { confirm: 'Are you sure?' } %>
-        </td>
-      </tr>
-    <% end %>
-  </tbody>
-</table>
+<% @comments.each do |comment| %>
+  <div>
+    <p><%= comment.content %></p>
+    <p>Posted by: <%= comment.member.name %></p>
+    <p>Posted at: <%= comment.created_at.strftime("%Y-%m-%d %H:%M") %></p>
+  </div>
+<% end %>
