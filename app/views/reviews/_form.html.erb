@@ -1,0 +1,10 @@
+<%= form_with model: [@product, @product.reviews.build], local: true do |form| %>
+  <div class="field">
+    <%= form.label :rating, '評価' %><br>
+    <%= form.number_field :rating, in: 1..5 %>
+  </div>
+
+  <div class="actions">
+    <%= form.submit 'レビューを投稿' %>
+  </div>
+<% end %>

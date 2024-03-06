@@ -5,7 +5,8 @@
 
   <%= link_to '編集', edit_product_path(@product), class: 'btn btn-primary' %>
   <%= link_to '一覧に戻る', products_path, class: 'btn btn-secondary' %>
-  <%= link_to 'この製品に関する投稿を見る', product_posts_path(@product), class: 'btn btn-info' %> <!-- 追加 -->
+  <%= link_to 'この製品に関する投稿を見る', product_posts_path(@product), class: 'btn btn-info' %>
+  <%= link_to '削除', product_path(@product), method: :delete, data: { confirm: '本当に削除しますか？' }, class: 'btn btn-danger' %> <!-- 削除ボタン追加 -->
 
   <div class="comments">
     <h3>Comments</h3>
@@ -19,7 +20,18 @@
       </div>
     <% end %>
   </div>
+  
+<% if @product.posts.exists? %>
+  <%# デバッグコードを追加 %>
+  <% logger.debug "製品ID #{params[:id]} には関連する投稿が存在しません。" %>
+  <%= link_to 'この製品に関する最初のスレッドを見る', post_path(@product.posts.first), class: 'btn btn-info' %>
+  <p>関連する投稿はありません。</p>
+<% end %>
+  
+<h3>レビューを投稿する</h3>
+<%= render 'reviews/form', product: @product %>
 
   <h3>Add a comment:</h3>
   <%= render 'comments/form' %>
 </div>
+

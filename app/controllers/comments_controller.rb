@@ -11,13 +11,15 @@ def index
 end
 
 def create
-  @product = Product.find(params[:product_id])
-  @comment = @product.comments.new(comment_params.merge(member: current_member))
+  @post = Post.find(params[:post_id])
+  @comment = @post.comments.new(comment_params.merge(member: current_member))
+
   if @comment.save
-    redirect_to product_path(@product), notice: 'コメントが追加されました。'
+    redirect_to post_path(@post), notice: 'コメントが追加されました。'
   else
-    redirect_to product_path(@product), alert: 'コメントの追加に失敗しました。'
+    redirect_to post_path(@post), alert: 'コメントの追加に失敗しました。'
   end
+
 end
   
   def destroy

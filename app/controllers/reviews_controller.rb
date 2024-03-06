@@ -9,17 +9,18 @@ class ReviewsController < ApplicationController
   end
 
   def new
-    @review = Review.new
+    @review_form = ReviewForm.new
   end
+
   
   def show
     
   end
 
   def create
-    @review = Review.new(review_params)
-    if @review.save
-      redirect_to reviews_path, notice: 'Review was successfully created.'
+    @review_form = ReviewForm.new(review_form_params)
+    if @review_form.save
+      redirect_to product_path(params[:review_form][:product_id]), notice: 'レビューとコメントが正常に投稿されました。'
     else
       render :new
     end
@@ -43,12 +44,12 @@ class ReviewsController < ApplicationController
 
   private
 
-  def set_review
-    @review = Review.find(params[:id])
+  def review_form_params
+    params.require(:review_form).permit(:rating, :review_comment, :comment_content, :product_id).merge(member_id: current_member.id)
   end
 
-  def review_params
-    params.require(:review).permit(:member_id, :product_id, :rating, :comment, :review_date)
+  def set_review
+    @review = Review.find(params[:id])
   end
 
   # レビューの所有者かどうかをチェックするメソッド
