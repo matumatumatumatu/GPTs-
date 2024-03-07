@@ -11,24 +11,33 @@ def index
 end
 
 def create
-  @post = Post.find(params[:post_id])
+  @post = Post.find(params[:post_id]) # ここを修正: @product -> @post
   @comment = @post.comments.new(comment_params.merge(member: current_member))
 
   if @comment.save
+    Rails.logger.debug "コメントが保存されました: #{@comment.inspect}"
     redirect_to post_path(@post), notice: 'コメントが追加されました。'
   else
+    Rails.logger.debug "コメントの保存に失敗しました: #{@comment.errors.full_messages.join(", ")}"
     redirect_to post_path(@post), alert: 'コメントの追加に失敗しました。'
   end
+end
 
+private
+def comment_params
+  params.require(:comment).permit(:content)
 end
   
-  def destroy
+def destroy
   @comment = Comment.find(params[:id])
-  @product = @comment.product
-  if @comment.destroy
-    redirect_to product_path(@product), notice: 'コメントが削除されました。'
+  # コメントが製品に関連している場合
+  if @comment.product_id.present?
+    redirect_to product_path(@comment.product_id), notice: 'コメントが削除されました。'
+  # コメントが投稿に関連している場合
+  elsif @comment.post_id.present?
+    redirect_to post_path(@comment.post_id), notice: 'コメントが削除されました。'
   else
-    redirect_to product_path(@product), alert: 'コメントの削除に失敗しました。'
+    redirect_to root_path, alert: 'コメントの削除に失敗しました。'
   end
 end
 

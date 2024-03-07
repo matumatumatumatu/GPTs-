@@ -1,4 +1,3 @@
-# postはレビュー対象と概要
 class PostsController < ApplicationController
   before_action :authenticate_member!, only: [:new, :create, :edit, :update]
   before_action :check_ownership, only: [:edit, :update]
@@ -31,6 +30,12 @@ end
       render :new
     end
   end
+  
+  def show
+  @post = Post.find(params[:id])
+  @comments = @post.comments.order(created_at: :desc)
+  Rails.logger.debug "この投稿に関連するコメント: #{@comments.inspect}"
+end
   
   def edit
   end

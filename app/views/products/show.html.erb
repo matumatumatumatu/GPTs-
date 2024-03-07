@@ -22,16 +22,10 @@
   </div>
   
 <% if @product.posts.exists? %>
-  <%# デバッグコードを追加 %>
-  <% logger.debug "製品ID #{params[:id]} には関連する投稿が存在しません。" %>
   <%= link_to 'この製品に関する最初のスレッドを見る', post_path(@product.posts.first), class: 'btn btn-info' %>
+<% else %>
   <p>関連する投稿はありません。</p>
 <% end %>
   
-<h3>レビューを投稿する</h3>
-<%= render 'reviews/form', product: @product %>
-
-  <h3>Add a comment:</h3>
-  <%= render 'comments/form' %>
-</div>
-
+<h3>レビューとコメントを投稿する</h3>
+<%= render 'reviews_with_comments_form', product: @product %>

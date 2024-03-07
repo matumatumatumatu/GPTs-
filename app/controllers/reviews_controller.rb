@@ -12,28 +12,30 @@ class ReviewsController < ApplicationController
     @review_form = ReviewForm.new
   end
 
+def create
+  @review_form = ReviewForm.new(review_form_params)
+  if @review_form.save
+    redirect_to product_path(@review_form.product_id), notice: 'レビューが正常に投稿されました。'
+  else
+    # エラー処理: エラーメッセージの表示など
+    redirect_to product_path(params[:review_form][:product_id]), alert: 'レビューの投稿に失敗しました。'
+  end
+end
   
   def show
     
   end
 
-  def create
-    @review_form = ReviewForm.new(review_form_params)
-    if @review_form.save
-      redirect_to product_path(params[:review_form][:product_id]), notice: 'レビューとコメントが正常に投稿されました。'
-    else
-      render :new
-    end
-  end
 
   def edit
   end
 
   def update
+    @review = Review.find(params[:id])
     if @review.update(review_params)
-      redirect_to reviews_path, notice: 'Review was successfully updated.'
+      redirect_to product_path(@review.product_id), notice: 'レビューが更新されました。'
     else
-      render :edit
+      render :edit, alert: 'レビューの更新に失敗しました。'
     end
   end
 
@@ -46,6 +48,11 @@ class ReviewsController < ApplicationController
 
   def review_form_params
     params.require(:review_form).permit(:rating, :review_comment, :comment_content, :product_id).merge(member_id: current_member.id)
+  end
+
+  def review_params
+    # 必要なパラメータの設定。例えば:
+    params.require(:review).permit(:rating, :comment)
   end
 
   def set_review

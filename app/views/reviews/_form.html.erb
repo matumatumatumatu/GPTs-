@@ -1,10 +1,11 @@
-<%= form_with model: [@product, @product.reviews.build], local: true do |form| %>
+<%= form_with model: ReviewForm.new, url: product_reviews_path(@product), local: true do |form| %>
   <div class="field">
-    <%= form.label :rating, '評価' %><br>
+    <%= form.hidden_field :product_id, value: @product.id %>
+    <%= form.label :rating, "評価 (1〜5):" %>
     <%= form.number_field :rating, in: 1..5 %>
   </div>
 
   <div class="actions">
-    <%= form.submit 'レビューを投稿' %>
+    <%= form.submit "レビューを投稿する" %>
   </div>
 <% end %>

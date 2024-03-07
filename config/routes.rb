@@ -31,11 +31,11 @@ Rails.application.routes.draw do
   
   resources :comments, only: [:index, :destroy]
   
-  resources :products, only: [:index, :show, :new, :edit, :create, :destroy] do
+  resources :products do
     resources :comments, only: [:create, :destroy]
     resource :favorites, only: [:create, :destroy]
     resources :posts, only: [:new, :create, :show, :index]
-    resources :reviews, only: [:new, :create, :index] # レビューを製品にネストさせる
+    resources :reviews, only: [:new, :create, :index, :update] # レビューを製品にネストさせる
   end
 
   resources :tags, only: [:show]

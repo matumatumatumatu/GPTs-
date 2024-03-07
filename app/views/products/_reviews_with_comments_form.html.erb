@@ -1,0 +1,20 @@
+<!--_reviews_with_comments_form.html.erb コメントとレビューの複合レイアウト-->
+
+<%= form_with model: ReviewForm.new, url: product_reviews_path(@product), local: true do |form| %>
+  <%# 評価フィールド %>
+  <div class="field">
+    <%= form.label :rating, "評価 (1〜5):" %>
+    <%= form.number_field :rating, in: 1..5, required: true %>
+  </div>
+
+  <%# コメントフィールド %>
+  <div class="field">
+    <%= form.label :comment_content, "一般コメント:" %>
+    <%= form.text_area :comment_content, required: true %>
+  </div>
+
+  <%# 送信ボタン %>
+  <div class="actions">
+    <%= form.submit "レビューとコメントを投稿する" %>
+  </div>
+<% end %>

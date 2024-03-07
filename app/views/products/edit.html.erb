@@ -1,19 +1,16 @@
 <!-- app/views/products/edit.html.erb 生成AIそのものの名前と概要-->
 <div class="container mt-5">
   <h2>製品情報の編集</h2>
-  <%= form_for(@product) do |f| %>
-    <div class="form-group">
-      <%= f.label :name, "製品名" %>
-      <%= f.text_field :name, class: 'form-control' %>
-    </div>
+<%= form_with(model: @product, local: true) do |form| %>
+  <div class="form-group">
+    <%= form.label :name, "製品名" %>
+    <%= form.text_field :name, class: 'form-control' %>
+  </div>
 
-    <div class="form-group">
-      <%= f.label :description, "説明" %>
-      <%= f.text_area :description, class: 'form-control' %>
-    </div>
+  <div class="form-group">
+    <%= form.label :description, "説明" %>
+    <%= form.text_area :description, class: 'form-control' %>
+  </div>
 
-    <%= f.submit "更新", class: 'btn btn-primary' %>
-  <% end %>
-
-  <%= link_to '一覧に戻る', products_path, class: 'btn btn-secondary' %>
-</div>
+  <%= form.submit "更新", class: 'btn btn-primary' %>
+<% end %>
