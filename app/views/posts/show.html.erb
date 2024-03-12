@@ -18,8 +18,13 @@
               <p><strong>コメント:</strong> <%= comment.content %></p>
               <p><small><strong>投稿日時:</strong> <%= comment.created_at.strftime("%Y-%m-%d %H:%M") %></small></p>
             </div>
-          <% end %>
+        <!-- コメントを投稿したメンバーが現在ログインしているユーザーである場合のみ削除リンクを表示 -->
+    <% if comment.member == current_member %>
+      <%= link_to '削除', comment_path(comment), method: :delete, data: { confirm: 'コメントを削除しますか？' }, class: 'btn btn-danger btn-sm' %>
+    <% end %>
         </div>
+    <% end %>
+
       <% else %>
         <p>コメントはまだありません。</p>
       <% end %>

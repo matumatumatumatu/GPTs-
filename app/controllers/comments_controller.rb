@@ -1,5 +1,8 @@
 class CommentsController < ApplicationController
   before_action :restrict_guest_user_access, only: [:create]
+  before_action :set_comment, only: [:destroy] # この行を追加
+  before_action :authorize_member!, only: [:destroy] # この行を追加
+
   
 def index
   if params[:member_id].present?
@@ -23,33 +26,26 @@ def create
   end
 end
 
-private
-def comment_params
-  params.require(:comment).permit(:content)
-end
-  
-def destroy
-  @comment = Comment.find(params[:id])
-  # コメントが製品に関連している場合
-  if @comment.product_id.present?
-    redirect_to product_path(@comment.product_id), notice: 'コメントが削除されました。'
-  # コメントが投稿に関連している場合
-  elsif @comment.post_id.present?
-    redirect_to post_path(@comment.post_id), notice: 'コメントが削除されました。'
-  else
-    redirect_to root_path, alert: 'コメントの削除に失敗しました。'
+  def destroy
+    # コメントが製品または投稿に関連しているかに基づいてリダイレクト先を決定
+    redirect_path = @comment.product_id.present? ? product_path(@comment.product_id) : post_path(@comment.post_id)
+    @comment.destroy
+    redirect_to redirect_path, notice: 'コメントが削除されました。'
   end
-end
-
-def member_comments 
-  @member = Member.find(params[:id]) # メンバーを取得
-  @comments = @member.comments.order(created_at: :desc) # そのメンバーのコメントを新しい順に取得
-
-  render :index # indexビューを表示（または、メンバー専用のコメント一覧ビューを作成しても良い）
-end
 
   private
-    def comment_params
-      params.require(:comment).permit(:content)
+
+  def set_comment
+    @comment = Comment.find(params[:id])
+  end
+
+  def authorize_member!
+    unless @comment.member == current_member
+      redirect_to root_path, alert: 'コメントの削除は許可されていません。'
     end
+  end
+
+  def comment_params
+    params.require(:comment).permit(:content)
+  end
 end

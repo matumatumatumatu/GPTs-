@@ -29,7 +29,7 @@ Rails.application.routes.draw do
     delete :destroy, on: :member
   end
   
-  resources :comments, only: [:index, :destroy]
+  resources :comments, only: [:index, :create, :destroy]
   
   resources :products do
     resources :comments, only: [:create, :destroy]
@@ -41,7 +41,7 @@ Rails.application.routes.draw do
   resources :tags, only: [:show]
 
   resources :posts do
-    resources :comments, only: [:create]
+    resources :comments, only: [:create, :destroy]
     collection do
       get :drafts
     end
