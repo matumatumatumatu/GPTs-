@@ -1,0 +1,3 @@
+var newComment = "<%= j render(partial: 'comments/comment', locals: { comment: @comment }) %>";
+$('.comments-list').append(newComment);
+$('.comment-form textarea').val('');

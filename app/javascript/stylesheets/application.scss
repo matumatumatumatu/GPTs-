@@ -2,14 +2,13 @@
 
 // コメントフォームを画面下部に固定するスタイル
 .comment-form {
-  position: fixed;
-  bottom: 0;
-  left: 0;
+  // position: fixed; を削除またはコメントアウト
+  // bottom: 0;
+  // left: 0;
   width: 100%;
   background-color: white;
   padding: 20px;
   box-shadow: 0 -2px 5px rgba(0,0,0,0.1);
-  z-index: 100; // 他の要素より前面に表示させる
 }
 
 // コメントリストとフォームのコンテナのスタイル
@@ -22,9 +21,6 @@
   flex: 0 0 70%;
 }
 
-.comment-form-container {
-  flex: 0 0 28%;
-}
 
 // comments.scss
 .comments-list {

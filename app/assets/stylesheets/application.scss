@@ -28,8 +28,8 @@
 
 // コメントリストとフォームのコンテナのスタイル
 .comments-container {
-  display: flex;
-  justify-content: space-between;
+  max-height: 500px; // コメントリストの最大高さ
+  overflow-y: auto; // 縦方向にスクロール可能にする
 }
 
 .comments-list {
@@ -38,11 +38,4 @@
 
 .comment-form-container {
   flex: 0 0 28%;
-}
-
-// comments.scss
-.comments-list {
-  max-height: 500px; // コメントリストの最大高さを設定
-  overflow-y: auto; // 縦方向にスクロール可能にする
-  margin-bottom: 20px; // コメントフォームとの間隔
 }

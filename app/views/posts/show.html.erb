@@ -1,44 +1,35 @@
 <!-- app/views/posts/show.html.erb  対象生成AIのスレ的な-->
-<div class="container mt-5">
-  <div class="row justify-content-center">
-    <div class="col-md-8">
-      <h2 class="text-center"><%= @post.title %></h2>
-      <p><%= @post.body %></p>
-
-      <%= link_to '編集', edit_post_path(@post), class: 'btn btn-primary' %>
-      <%= link_to '一覧に戻る', posts_path, class: 'btn btn-secondary' %>
-
-      <hr>
-
-      <h3>コメント</h3>
-      <% if @post.comments.any? %>
-        <div class="comments">
+<div class="container">
+  <div class="row">
+    <div class="col-md-8 offset-md-2">
+      <div class="comments-section mt-4" style="max-height: 500px; overflow-y: auto;">
+        <!-- コメントリスト -->
+        <% if @post.comments.any? %>
           <% @post.comments.each do |comment| %>
             <div class="comment mb-3">
               <p><strong>コメント:</strong> <%= comment.content %></p>
               <p><small><strong>投稿日時:</strong> <%= comment.created_at.strftime("%Y-%m-%d %H:%M") %></small></p>
+              <!-- コメントを投稿したメンバーが現在ログインしているユーザーである場合のみ削除リンクを表示 -->
+              <% if comment.member == current_member %>
+                <%= link_to '削除', comment_path(comment), method: :delete, remote: true, data: { confirm: 'コメントを削除しますか？' }, class: 'btn btn-danger btn-sm' %>
+              <% end %>
             </div>
-        <!-- コメントを投稿したメンバーが現在ログインしているユーザーである場合のみ削除リンクを表示 -->
-    <% if comment.member == current_member %>
-      <%= link_to '削除', comment_path(comment), method: :delete, data: { confirm: 'コメントを削除しますか？' }, class: 'btn btn-danger btn-sm' %>
-    <% end %>
-        </div>
-    <% end %>
-
-      <% else %>
-        <p>コメントはまだありません。</p>
-      <% end %>
-
-      <!-- コメント投稿フォーム -->
-      <div class="comment-form mt-5">
-        <h4>コメントを追加</h4>
-        <%= form_with(model: [@post, Comment.new], local: true) do |form| %>
-          <div class="form-group">
-            <%= form.label :content, "コメント内容" %>
-            <%= form.text_area :content, rows: 4, class: 'form-control', required: true %>
-          </div>
-          <%= form.submit "コメントを投稿", class: 'btn btn-success' %>
+          <% end %>
+        <% else %>
+          <p>コメントはまだありません。</p>
         <% end %>
+
+        <!-- コメント追加フォーム -->
+        <div class="comment-form mt-4">
+          <h4>コメントを追加</h4>
+          <%= form_with(model: [@post, Comment.new], local: true) do |form| %>
+            <div class="form-group">
+              <%= form.label :content, "コメント内容" %>
+              <%= form.text_area :content, rows: 4, class: 'form-control', required: true %>
+            </div>
+            <%= form.submit "コメントを投稿", class: 'btn btn-success' %>
+          <% end %>
+        </div>
       </div>
     </div>
   </div>
