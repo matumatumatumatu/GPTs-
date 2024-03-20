@@ -1,30 +1,15 @@
 @use '~bootstrap/scss/bootstrap';
 
 // コメントフォームを画面下部に固定するスタイル
+
+.comments-list {
+  max-height: 500px;
+  overflow-y: auto;
+  margin-bottom: 20px;
+}
+
 .comment-form {
-  // position: fixed; を削除またはコメントアウト
-  // bottom: 0;
-  // left: 0;
-  width: 100%;
   background-color: white;
   padding: 20px;
-  box-shadow: 0 -2px 5px rgba(0,0,0,0.1);
-}
-
-// コメントリストとフォームのコンテナのスタイル
-.comments-container {
-  display: flex;
-  justify-content: space-between;
-}
-
-.comments-list {
-  flex: 0 0 70%;
-}
-
-
-// comments.scss
-.comments-list {
-  max-height: 500px; // コメントリストの最大高さを設定
-  overflow-y: auto; // 縦方向にスクロール可能にする
-  margin-bottom: 20px; // コメントフォームとの間隔
+  box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1);
 }
