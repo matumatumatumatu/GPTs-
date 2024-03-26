@@ -14,11 +14,13 @@ class ReviewsController < ApplicationController
 
 def create
   @review_form = ReviewForm.new(review_form_params)
+  Rails.logger.debug { "Review Form Params: #{review_form_params.inspect}" } # パラメータの確認
   if @review_form.save
+    Rails.logger.debug { "Review successfully saved." }
     redirect_to product_path(@review_form.product_id), notice: 'レビューが正常に投稿されました。'
   else
-    # エラー処理: エラーメッセージの表示など
-    redirect_to product_path(params[:review_form][:product_id]), alert: 'レビューの投稿に失敗しました。'
+    Rails.logger.debug { "Failed to save review." }
+    redirect_to product_path(@review_form.product_id), alert: 'レビューの投稿に失敗しました。'
   end
 end
   
@@ -46,9 +48,10 @@ end
 
   private
 
-  def review_form_params
-    params.require(:review_form).permit(:rating, :review_comment, :comment_content, :product_id).merge(member_id: current_member.id)
-  end
+
+def review_form_params
+  params.require(:review_form).permit(:rating, :review_comment, :comment_content).merge(member_id: current_member.id, product_id: params[:product_id])
+end
 
   def review_params
     # 必要なパラメータの設定。例えば:

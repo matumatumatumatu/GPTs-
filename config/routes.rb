@@ -21,10 +21,6 @@ Rails.application.routes.draw do
     resources :comments, only: [:index, :edit, :update, :destroy]
   end
 
-  resources :favorites, only: [:create] do
-    delete :destroy, on: :member
-  end
-
   resources :reviews, only: [:index, :new, :create, :edit, :update, :show] do
     delete :destroy, on: :member
   end
@@ -33,9 +29,9 @@ Rails.application.routes.draw do
   
   resources :products do
     resources :comments, only: [:create, :destroy]
-    resource :favorites, only: [:create, :destroy]
     resources :posts, only: [:new, :create, :show, :index]
     resources :reviews, only: [:new, :create, :index, :update] # レビューを製品にネストさせる
+    resource :favorites, only: [:create, :destroy]
   end
 
   resources :tags, only: [:show]

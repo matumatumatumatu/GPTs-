@@ -19,19 +19,19 @@ class MembersController < ApplicationController
     end
   end
 
-  def guest_sign_in
+def guest_sign_in
     # ゲストログイン機能（変更なし）
-    member = Member.find_or_create_by!(email: 'guest@example.com') do |member|
+  member = Member.find_or_create_by!(email: 'guest@example.com') do |member|
       member.password = SecureRandom.urlsafe_base64
-    end
+  end
     sign_in member
     redirect_to root_path, notice: 'You have logged in as a guest user.'
-  end
+end
 
-  def favorites
-    # いいねした製品の一覧を取得（変更なし）
-    @favorites = @member.favorites.includes(:product)
-  end
+def favorites
+  # 現在ログインしているメンバーのお気に入りに登録した製品の一覧を取得
+  @favorites = current_member.favorites.includes(:product)
+end
 
   private
 

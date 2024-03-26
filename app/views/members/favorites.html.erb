@@ -1,2 +1,10 @@
-<h1>Members#favorites</h1>
-<p>Find me in app/views/members/favorites.html.erb</p>
+<h1>お気に入り商品</h1>
+
+<ul>
+  <% @favorites.each do |favorite| %>
+    <li>
+      <%= link_to favorite.product.name, product_path(favorite.product) %>
+      <!-- お気に入りから削除するリンクも必要であればここに追加 -->
+    </li>
+  <% end %>
+</ul>

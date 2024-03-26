@@ -3,10 +3,14 @@
   <h2><%= @product.name %></h2>
   <p><%= @product.description %></p>
 
-  <%= link_to '編集', edit_product_path(@product), class: 'btn btn-primary' %>
-  <%= link_to '一覧に戻る', products_path, class: 'btn btn-secondary' %>
+<%= link_to '編集', edit_product_path(@product), class: 'btn btn-primary' %>
+
+<%= link_to '一覧に戻る', products_path, class: 'btn btn-secondary' %>
   <%= link_to 'この製品に関する投稿を見る', product_posts_path(@product), class: 'btn btn-info' %>
-  <%= link_to '削除', product_path(@product), method: :delete, data: { confirm: '本当に削除しますか？' }, class: 'btn btn-danger' %> <!-- 削除ボタン追加 -->
+  
+<% if current_member.id == @product.member_id %>
+  <%= link_to '削除', product_path(@product), method: :delete, data: { confirm: '本当に削除しますか？' }, class: 'btn btn-danger' %>
+<% end %>
 
   <div class="comments">
     <h3>Comments</h3>
@@ -25,6 +29,12 @@
   <%= link_to 'この製品に関する最初のスレッドを見る', post_path(@product.posts.first), class: 'btn btn-info' %>
 <% else %>
   <p>関連する投稿はありません。</p>
+<% end %>
+  
+<% if current_member.favorites.exists?(product_id: @product.id) %>
+  <%= link_to 'お気に入り解除', product_favorites_path(@product), method: :delete, class: 'btn btn-warning' %>
+<% else %>
+  <%= link_to 'お気に入りに追加', product_favorites_path(@product), method: :post, class: 'btn btn-primary' %>
 <% end %>
   
 <h3>レビューとコメントを投稿する</h3>
