@@ -3,39 +3,58 @@
   <h2><%= @product.name %></h2>
   <p><%= @product.description %></p>
 
-<%= link_to '編集', edit_product_path(@product), class: 'btn btn-primary' %>
+  <h3>投稿されたレビュー</h3>
 
-<%= link_to '一覧に戻る', products_path, class: 'btn btn-secondary' %>
+  <% @reviews.includes(:comment).each do |review| %>
+    <div class="review">
+      <strong>評価:</strong> <%= review.rating %><br>
+      <strong>コメント:</strong> <%= review.comment&.content %><br>
+      <strong>投稿者:</strong> <%= review.member.name %><br>
+      <strong>投稿日:</strong> <%= review.created_at.strftime("%Y-%m-%d %H:%M") %><br>
+      <% if current_member && current_member == review.member %>
+        <%= link_to '削除', product_review_path(@product, review), method: :delete, data: { confirm: '本当に削除しますか？' }, class: 'btn btn-danger' %>
+      <% end %>
+    </div>
+  <% end %>
+
+  <%= link_to '編集', edit_product_path(@product), class: 'btn btn-primary' %> |
+  <%= link_to '一覧に戻る', products_path, class: 'btn btn-secondary' %> |
   <%= link_to 'この製品に関する投稿を見る', product_posts_path(@product), class: 'btn btn-info' %>
-  
-<% if current_member.id == @product.member_id %>
-  <%= link_to '削除', product_path(@product), method: :delete, data: { confirm: '本当に削除しますか？' }, class: 'btn btn-danger' %>
-<% end %>
 
-  <div class="comments">
-    <h3>Comments</h3>
-    <% @comments.each do |comment| %>
-      <div class="comment">
-        <p><%= comment.content %></p>
-        <p>Posted at: <%= comment.created_at.strftime("%Y-%m-%d %H:%M") %></p>
-        <% if comment_belongs_to_current_member?(comment) %>
-          <%= link_to 'Delete', comment_path(comment), method: :delete, data: { confirm: 'Are you sure?' } %>
-        <% end %>
+  <% if current_member && current_member.id == @product.member_id %>
+    <%= link_to '削除', product_path(@product), method: :delete, data: { confirm: '本当に削除しますか？' }, class: 'btn btn-danger' %>
+  <% end %>
+
+  <% if @product.posts.exists? %>
+    <%= link_to 'この製品に関する最初のスレッドを見る', post_path(@product.posts.first), class: 'btn btn-info' %>
+  <% else %>
+    <p>関連する投稿はありません。</p>
+  <% end %>
+
+  <% if current_member && current_member.favorites.exists?(product_id: @product.id) %>
+    <%= link_to 'お気に入り解除', product_favorites_path(@product), method: :delete, class: 'btn btn-warning' %>
+  <% else %>
+    <%= link_to 'お気に入りに追加', product_favorites_path(@product), method: :post, class: 'btn btn-primary' %>
+  <% end %>
+
+  <h3>レビューを投稿する</h3>
+
+  <%= form_with model: [@product, @product.reviews.build], local: true do |form| %>
+  
+    <div class="field">
+      <%= form.label :rating, "評価 (1〜5):" %>
+      <%= form.number_field :rating, in: 1..5, required: true %>
+    </div>
+
+    <%= form.fields_for :comment do |comment_fields| %>
+      <div class="field">
+        <%= comment_fields.label :content, "レビューコメント:" %>
+        <%= comment_fields.text_area :content, required: true %>
       </div>
     <% end %>
-  </div>
-  
-<% if @product.posts.exists? %>
-  <%= link_to 'この製品に関する最初のスレッドを見る', post_path(@product.posts.first), class: 'btn btn-info' %>
-<% else %>
-  <p>関連する投稿はありません。</p>
-<% end %>
-  
-<% if current_member.favorites.exists?(product_id: @product.id) %>
-  <%= link_to 'お気に入り解除', product_favorites_path(@product), method: :delete, class: 'btn btn-warning' %>
-<% else %>
-  <%= link_to 'お気に入りに追加', product_favorites_path(@product), method: :post, class: 'btn btn-primary' %>
-<% end %>
-  
-<h3>レビューとコメントを投稿する</h3>
-<%= render 'reviews_with_comments_form', product: @product %>
+
+    <div class="actions">
+      <%= form.submit "レビューを投稿する" %>
+    </div>
+  <% end %>
+</div>

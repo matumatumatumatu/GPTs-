@@ -30,7 +30,7 @@ Rails.application.routes.draw do
   resources :products do
     resources :comments, only: [:create, :destroy]
     resources :posts, only: [:new, :create, :show, :index]
-    resources :reviews, only: [:new, :create, :index, :update] # レビューを製品にネストさせる
+    resources :reviews, only: [:new, :create, :index, :update, :destroy] # レビューを製品にネストさせる
     resource :favorites, only: [:create, :destroy]
   end
 

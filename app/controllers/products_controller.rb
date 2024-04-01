@@ -13,8 +13,7 @@ class ProductsController < ApplicationController
 
 def show
   @product = Product.find(params[:id])
-  @comments = @product.comments.order(created_at: :desc) # 製品に関連するコメントを設定
-  @review_form = ReviewForm.new(product_id: @product.id) # 新しいReviewFormインスタンスを設定
+  @reviews = @product.reviews.includes(:comment)
 end
 
   def new
@@ -45,7 +44,6 @@ def create
     )
     redirect_to @product, notice: '製品が正常に作成され、関連するスレッドが追加されました。'
   else
-    Rails.logger.debug "製品の保存に失敗しました: #{product.errors.full_messages.join(", ")}"
     render :new
   end
 end

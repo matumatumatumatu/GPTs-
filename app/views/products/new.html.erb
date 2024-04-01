@@ -1,7 +1,19 @@
 <!-- app/views/products/new.html.erb 生成AIそのものの名前と概要 -->
 <div class="container mt-5">
   <h2>新しい製品を登録</h2>
+
   <%= form_for(@product) do |f| %>
+    <% if @product.errors.any? %>
+      <div id="error_explanation">
+        <h2><%= pluralize(@product.errors.count, "error") %> prohibited this product from being saved:</h2>
+        <ul>
+          <% @product.errors.full_messages.each do |message| %>
+            <li><%= message %></li>
+          <% end %>
+        </ul>
+      </div>
+    <% end %>
+
     <div class="form-group">
       <%= f.label :name, "製品名" %>
       <%= f.text_field :name, class: 'form-control' %>

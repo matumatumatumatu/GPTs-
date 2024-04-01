@@ -12,7 +12,7 @@
           <li class="nav-item"><%= link_to 'マイページ', member_path(current_member), class: 'nav-link' %></li>
           <li class="nav-item"><%= link_to '製品一覧', products_path, class: 'nav-link' %></li>
           <li class="nav-item"><%= link_to 'お気に入り', favorites_member_path(current_member), class: 'nav-link' %></li>
-          <li class="nav-item"><%= link_to 'レビュー投稿', new_review_path, class: 'nav-link' %></li>
+          <li class="nav-item"><%= link_to '新しい製品を登録', new_product_path, class: 'nav-link' %></li>
           <li class="nav-item"><%= link_to 'ログアウト', destroy_member_session_path, method: :delete, class: 'nav-link' %></li>
         <% else %>
 
