@@ -8,11 +8,21 @@ class ReviewsController < ApplicationController
   # 他のアクションは変更なし
   
 def create
-  @review = current_member.reviews.build(review_params.merge(product_id: @product.id))
+  @review = @product.reviews.build(review_params)
+  @review.member = current_member
+    # 新しくビルドされたコメントに対して、current_memberのidをmember_idとして設定
+  @review.comment.member = current_member if @review.comment.present?
+  
   if @review.save
+    # デバッグ: 保存されたレビューとコメントの確認
+    Rails.logger.debug("Saved review: #{@review.inspect}")
+    Rails.logger.debug("Associated comment: #{@review.comment.inspect}")
+
     redirect_to @product, notice: 'レビューが正常に投稿されました。'
   else
-    redirect_to @product, alert: '投稿に失敗しました。'
+    # レビュー保存失敗時のエラーをログに出力
+    Rails.logger.debug(@review.errors.full_messages)
+    render 'products/show', alert: 'レビューの投稿に失敗しました。'
   end
 end
 
@@ -27,8 +37,9 @@ end
       @product = Product.find(params[:product_id])
     end
 
+
 def review_params
-  params.require(:review).permit(:rating, comment_attributes: [:content, :member_id, :product_id])
+  params.require(:review).permit(:rating, comment_attributes: [:content])
 end
 
     def set_review

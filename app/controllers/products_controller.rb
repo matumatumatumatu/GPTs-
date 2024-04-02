@@ -14,11 +14,21 @@ class ProductsController < ApplicationController
 def show
   @product = Product.find(params[:id])
   @reviews = @product.reviews.includes(:comment)
+
+  # デバッグ: 取得されたレビューの数と最初のレビューの内容を確認
+  Rails.logger.debug("Number of reviews: #{@reviews.size}")
+  @reviews.each do |review|
+    Rails.logger.debug("Review: #{review.inspect}, Comment: #{review.comment.inspect}")
+  end
+
+  @new_review = @product.reviews.build
 end
 
-  def new
-    @product = Product.new
-  end
+def new
+  @product = Product.find(params[:product_id])
+  @review = @product.reviews.build
+  @review.build_comment # Commentのインスタンスを初期化
+end
 
 def edit
   @product = Product.find(params[:id])
@@ -34,17 +44,13 @@ def member_products
 end
   
 def create
-  @product = Product.new(product_params)
-  @product.member = current_member
-  if @product.save
-    post = @product.posts.create(
-      title: @product.name,
-      body: "この製品についてのスレッドです。",
-      member: current_member
-    )
-    redirect_to @product, notice: '製品が正常に作成され、関連するスレッドが追加されました。'
+  @review = @product.reviews.new(review_params.merge(member: current_member))
+
+  if @review.save
+    redirect_to @product, notice: 'レビューが正常に投稿されました。'
   else
-    render :new
+    flash[:alert] = 'レビューの投稿に失敗しました。' + @review.errors.full_messages.join(", ")
+    redirect_to @product
   end
 end
 

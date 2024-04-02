@@ -5,17 +5,19 @@
 
   <h3>投稿されたレビュー</h3>
 
-  <% @reviews.includes(:comment).each do |review| %>
-    <div class="review">
-      <strong>評価:</strong> <%= review.rating %><br>
-      <strong>コメント:</strong> <%= review.comment&.content %><br>
-      <strong>投稿者:</strong> <%= review.member.name %><br>
-      <strong>投稿日:</strong> <%= review.created_at.strftime("%Y-%m-%d %H:%M") %><br>
-      <% if current_member && current_member == review.member %>
-        <%= link_to '削除', product_review_path(@product, review), method: :delete, data: { confirm: '本当に削除しますか？' }, class: 'btn btn-danger' %>
-      <% end %>
-    </div>
-  <% end %>
+  <% @product.reviews.includes(:comment).each do |review| %>
+  <div class="review">
+    <strong>評価:</strong> <%= review.rating %><br>
+    <strong>コメント:</strong> <%= review.comment&.content %><br>
+    <strong>投稿者:</strong> <%= review.member&.name || "匿名" %><br>
+    <strong>投稿日:</strong> <%= review.created_at.strftime("%Y-%m-%d %H:%M") %><br>
+    <% if current_member && current_member == review.member %>
+      <%= link_to '削除', product_review_path(@product, review), method: :delete, data: { confirm: '本当に削除しますか？' }, class: 'btn btn-danger' %>
+    <% end %>
+    <% Rails.logger.debug("Review: #{review.inspect}") %>
+    <% Rails.logger.debug("Comment: #{review.comment.inspect}") if review.comment.present? %>
+  </div>
+<% end %>
 
   <%= link_to '編集', edit_product_path(@product), class: 'btn btn-primary' %> |
   <%= link_to '一覧に戻る', products_path, class: 'btn btn-secondary' %> |
@@ -39,22 +41,21 @@
 
   <h3>レビューを投稿する</h3>
 
-  <%= form_with model: [@product, @product.reviews.build], local: true do |form| %>
-  
+<%= form_with model: [@product, @new_review], local: true do |form| %>
+  <div class="field">
+    <%= form.label :rating, "評価 (1〜5):" %>
+    <%= form.number_field :rating, in: 1..5, required: true %>
+  </div>
+
+  <%= form.fields_for :comment, @new_review.build_comment do |comment_fields| %>
     <div class="field">
-      <%= form.label :rating, "評価 (1〜5):" %>
-      <%= form.number_field :rating, in: 1..5, required: true %>
-    </div>
-
-    <%= form.fields_for :comment do |comment_fields| %>
-      <div class="field">
-        <%= comment_fields.label :content, "レビューコメント:" %>
-        <%= comment_fields.text_area :content, required: true %>
-      </div>
-    <% end %>
-
-    <div class="actions">
-      <%= form.submit "レビューを投稿する" %>
+      <%= comment_fields.label :content, "レビューコメント:" %>
+      <%= comment_fields.text_area :content, required: true %>
     </div>
   <% end %>
+
+  <div class="actions">
+    <%= form.submit "レビューを投稿する" %>
+  </div>
+<% end %>
 </div>
