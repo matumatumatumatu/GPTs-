@@ -8,4 +8,6 @@ class Product < ApplicationRecord
   belongs_to :member
   has_many :favorites, dependent: :destroy
   has_many :favorited_members, through: :favorites, source: :member
+  has_many :product_tags
+  has_many :tags, through: :product_tags
 end

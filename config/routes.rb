@@ -31,6 +31,7 @@ Rails.application.routes.draw do
     resources :comments, only: [:create, :destroy]
     resources :posts, only: [:new, :create, :show, :index]
     resources :reviews, only: [:new, :create, :index, :update, :destroy] # レビューを製品にネストさせる
+    resources :tags, controller: 'product_tags', only: [:create, :destroy]
     resource :favorites, only: [:create, :destroy]
   end
 
