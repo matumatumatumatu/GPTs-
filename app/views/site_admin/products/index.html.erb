@@ -1,0 +1,31 @@
+<!-- app/views/site_admin/products/index.html.erb 管理者用製品一覧ページ -->
+<div class="container mt-5">
+  <h2>製品管理</h2>
+  <% if @products.present? %>
+    <table class="table">
+      <thead>
+        <tr>
+          <th scope="col">製品名</th>
+          <th scope="col">概要</th>
+          <th scope="col">操作</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @products.each do |product| %>
+          <tr>
+            <td><%= link_to product.name, [:site_admin, product] %></td>
+            <td><%= truncate(product.description, length: 100) %></td>
+            <td>
+              <%= link_to '編集', edit_site_admin_product_path(product), class: 'btn btn-sm btn-primary' %>
+              <%= link_to '削除', site_admin_product_path(product), method: :delete, data: { confirm: '本当に削除しますか？' }, class: 'btn btn-sm btn-danger' %>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  <% else %>
+    <p>製品がありません。</p>
+  <% end %>
+
+  <%= link_to '新しい製品を登録', new_site_admin_product_path, class: 'btn btn-primary' %>
+</div>

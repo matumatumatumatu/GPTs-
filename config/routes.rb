@@ -1,6 +1,7 @@
 Rails.application.routes.draw do
   # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
   devise_for :members
+  devise_for :site_admins
   
   root "home#top"
 
@@ -12,11 +13,11 @@ Rails.application.routes.draw do
     get 'comments', on: :member, to: 'comments#member_comments'
   end
 
-  namespace :admin do
+  namespace :site_admin do
     resources :members, only: [:index, :show, :edit, :update, :destroy]
     resources :reviews, only: [:index, :edit, :update, :destroy]
     resources :products, only: [:index, :edit, :update, :destroy]
-    resources :tags, only: [:index, :edit, :update, :destroy]
+    resources :tags, only: [:index, :edit, :update, :new, :destroy]
     resources :posts, only: [:index, :edit, :update, :destroy]
     resources :comments, only: [:index, :edit, :update, :destroy]
   end

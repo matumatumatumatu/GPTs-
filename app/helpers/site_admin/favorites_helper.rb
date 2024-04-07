@@ -1,0 +1,2 @@
+module SiteAdmin::FavoritesHelper
+end

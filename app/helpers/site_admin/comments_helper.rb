@@ -1,0 +1,2 @@
+module SiteAdmin::CommentsHelper
+end

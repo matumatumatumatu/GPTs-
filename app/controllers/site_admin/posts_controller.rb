@@ -1,8 +1,5 @@
-class Admin::MembersController < ApplicationController
+class SiteAdmin::PostsController < ApplicationController
   def index
-  end
-
-  def show
   end
 
   def edit

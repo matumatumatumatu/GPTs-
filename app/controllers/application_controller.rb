@@ -26,4 +26,15 @@ class ApplicationController < ActionController::Base
     # resourceがMemberのインスタンスであると想定し、members#showへのパスを返す
     member_path(resource)
   end
+
+  # ユーザーがログインに成功した後にリダイレクトされるパスを定義
+  def after_sign_in_path_for(resource)
+    if resource.is_a?(SiteAdmin)
+      site_admin_products_path # 管理者が製品一覧ページにリダイレクトされる
+    elsif resource.is_a?(Member)
+      member_path(resource) # 通常のメンバー用のパス
+    else
+      super # それ以外のケースではデフォルトのリダイレクト先を使用
+    end
+  end
 end

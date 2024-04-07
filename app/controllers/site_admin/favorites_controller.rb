@@ -1,4 +1,4 @@
-class Admin::FavoritesController < ApplicationController
+class SiteAdmin::FavoritesController < ApplicationController
   def index
   end
 
