@@ -12,7 +12,7 @@ class SiteAdmin::TagsController < ApplicationController
   def create
     @tag = Tag.new(tag_params)
     if @tag.save
-      redirect_to admin_tags_path, notice: 'タグが正常に作成されました。'
+      redirect_to site_admin_tags_path, notice: 'タグが正常に作成されました。'
     else
       render :new
     end
@@ -26,7 +26,7 @@ class SiteAdmin::TagsController < ApplicationController
   def update
     @tag = Tag.find(params[:id])
     if @tag.update(tag_params)
-      redirect_to admin_tags_path, notice: 'タグが正常に更新されました。'
+      redirect_to site_admin_tags_path, notice: 'タグが正常に更新されました。'
     else
       render :edit
     end
@@ -35,7 +35,7 @@ class SiteAdmin::TagsController < ApplicationController
   def destroy
     @tag = Tag.find(params[:id])
     @tag.destroy
-    redirect_to admin_tags_path, notice: 'タグが削除されました。'
+    redirect_to site_admin_tags_path, notice: 'タグが削除されました。'
   end
   
   private

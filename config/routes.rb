@@ -16,8 +16,8 @@ Rails.application.routes.draw do
   namespace :site_admin do
     resources :members, only: [:index, :show, :edit, :update, :destroy]
     resources :reviews, only: [:index, :edit, :update, :destroy]
-    resources :products, only: [:index, :edit, :update, :destroy]
-    resources :tags, only: [:index, :edit, :update, :new, :destroy]
+    resources :products, only: [:index, :edit, :update, :destroy, :new, :create]
+    resources :tags, only: [:index, :edit, :update, :new, :destroy, :create]
     resources :posts, only: [:index, :edit, :update, :destroy]
     resources :comments, only: [:index, :edit, :update, :destroy]
   end
