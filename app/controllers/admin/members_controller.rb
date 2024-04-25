@@ -1,4 +1,4 @@
-module SiteAdmin
+module Admin
   class MembersController < ApplicationController
     before_action :set_member, only: [:show, :edit, :update, :destroy]
 
